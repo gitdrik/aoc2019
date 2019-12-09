@@ -233,7 +233,7 @@ while running(1)
         I(amp,iUt) = a == b;
         step = 4;
       
-    elseif oc == 9
+      elseif oc == 9
         if ma == 0
           a = I(amp, I(amp, i(amp)+1)+1);
         elseif ma == 1
