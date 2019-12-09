@@ -36,6 +36,6 @@ for row in range(height):
                 if pixel == 1:
                     print('O',end='')
                 else:
-                  print(' ',end='')
+                    print(' ',end='')
                 break
     print('')
