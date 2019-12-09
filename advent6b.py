@@ -13,5 +13,4 @@ def dist(a,b,tree):
         distance = min(distance, dist(list(filter(lambda x:x!=a,relative))[0],b,list(filter(lambda x:not(a in x),tree))))
     return distance + 1
     
-
 print(dist('YOU','SAN',orbs)-2)
