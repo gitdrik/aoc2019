@@ -16,7 +16,7 @@ height = 6
 for i in range(0, len(rows), height):
     layers = layers + [rows[i:(i+height)]]
 
-######### First part
+######### first part
 zerosPerLayer = list(map(lambda x:x.count(0),
                           list(map(lambda x:sum(x,[]),layers))))
 
@@ -25,7 +25,7 @@ minLayer = zerosPerLayer.index(min(zerosPerLayer))
 print( sum(map(lambda x:x.count(1),layers[minLayer])) *
        sum(map(lambda x:x.count(2),layers[minLayer])), end='\n\n')
 
-########## Second part
+######### second part
 for row in range(height):
     for column in range(width):
         for layer in range(100):
