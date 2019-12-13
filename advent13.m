@@ -8,6 +8,7 @@ i = [1];
 irel = [0];
 running = [1];
 In = [0];
+amp=1;
 
 while running(1)
 
