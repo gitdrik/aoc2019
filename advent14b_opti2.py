@@ -11,7 +11,6 @@ with open('reactions.txt') as f:
         chemicals[words[-1]] = [0, int(words[-2]), reactants]
 start = copy.deepcopy(chemicals)
 
-
 def produce(chemical, num):
     if chemical == 'ORE':
         return num
