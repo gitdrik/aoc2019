@@ -22,7 +22,7 @@ def produce(chemical, num):
         ore = 0
         need = num - chemicals[chemical][0]
         get = chemicals[chemical][1]
-        kits = need // get + ((need % get) > 0)
+        kits = -(-need // get)
         for chem in chemicals[chemical][2]:
             ore += produce(chem[0],chem[1]*kits)
         chemicals[chemical][0] += chemicals[chemical][1]*kits - num
