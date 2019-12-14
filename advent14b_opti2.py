@@ -1,4 +1,3 @@
-import math
 import copy
 
 chemicals = {}
@@ -23,7 +22,7 @@ def produce(chemical, num):
         ore = 0
         need = num - chemicals[chemical][0]
         get = chemicals[chemical][1]
-        kits = math.ceil(need / get)
+        kits = need // get + ((need % get) > 0)
         for chem in chemicals[chemical][2]:
             ore += produce(chem[0],chem[1]*kits)
         chemicals[chemical][0] += chemicals[chemical][1]*kits - num
@@ -35,8 +34,8 @@ while 1:
     ore = produce('FUEL',guess)
     chemicals = copy.deepcopy(start)
     newguess = guess + (1000000000000-ore)*guess//(2*ore)
-    if newguess == guess:
+    if newguess > guess:
+        guess = newguess
+    else:
         print(guess)
         break
-    else:
-        guess = newguess
