@@ -1,4 +1,3 @@
-
 orbs = []
 
 with open('orbs.txt') as f:
