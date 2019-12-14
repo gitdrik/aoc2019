@@ -28,7 +28,6 @@ def produce(chemical, num):
         chemicals[chemical][0] += chemicals[chemical][1]*kits - num
         return ore
 
-ore = 0
 guess = 1000000
 while 1:
     ore = produce('FUEL',guess)
