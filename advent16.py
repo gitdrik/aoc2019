@@ -4,6 +4,8 @@ plength = len(pattern)
 out = ''
 #signal ='12345678'
 #signal = '80871224585914546619083218645595'
+#signal = '03036732577212944063491565474664'
+
 
 for p in range(100):
     for i in range(len(signal)):
@@ -15,4 +17,4 @@ for p in range(100):
     signal = out
     out = ''
 
-print(signal)
+print(signal[:8])
