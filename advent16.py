@@ -5,11 +5,14 @@ out = ''
 #signal ='12345678'
 signal = '80871224585914546619083218645595'
 
-for i in range(len(signal)):
-	digit = 0
-	for j in range(len(signal)):
-		multiplier = pattern[(j+1)//(i+1) % plength]
-		digit += int(signal[j])*multiplier
-		print(multiplier, end=' ')
-	print('')
-	out += str(abs(digit) % 10)
+for p in range(100):
+    for i in range(len(signal)):
+        digit = 0
+        for j in range(len(signal)):
+            multiplier = pattern[(j+1)//(i+1) % plength]
+            digit += int(signal[j])*multiplier
+        out += str(abs(digit) % 10)
+    signal = out
+    out = ''
+
+print(signal)
