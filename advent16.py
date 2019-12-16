@@ -3,7 +3,7 @@ pattern = [0,1,0,-1]
 plength = len(pattern)
 out = ''
 #signal ='12345678'
-signal = '80871224585914546619083218645595'
+#signal = '80871224585914546619083218645595'
 
 for p in range(100):
     for i in range(len(signal)):
