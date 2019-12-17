@@ -82,14 +82,17 @@ def intcom(C, pos, relpos, Input, running):
             b = read(pos+2, mb)
             write(int(a < b), pos+3, mc)
             step = 4
+            
         elif oc == 8:
             a = read(pos+1, ma)
             b = read(pos+2, mb)
             write(int(a == b), pos+3, mc)
             step = 4
+            
         elif oc == 9:
             a = read(pos+1, ma)
             relpos += a
+            step = 2
             
         pos += step
 
