@@ -95,21 +95,37 @@ def intcom(C, pos, relpos, Input, running):
         pos += step
 
 
-# part one
-(CODE, pos, relpos, Output, running) = intcom(CODE, 0, 0, [], True)
-os = ''.join(map(chr, Output))
-print(os)
-ol = os.strip().split('\n')
-cs = 0
-for i in range(1,len(ol)-1):
-    for j in range(1,len(ol[0])-1):
-        if ((ol[i][j] ==  '#') and
-            (ol[i-1][j] ==  '#') and
-            (ol[i+1][j] ==  '#') and
-            (ol[i][j-1] ==  '#') and
-            (ol[i][j+1] ==  '#')):
-            cs += i*j
-print(cs)
-               
-    
+def partone():
+    global CODE
+    (CODE, pos, relpos, Output, running) = intcom(CODE, 0, 0, [], True)
+    os = ''.join(map(chr, Output))
+    print(os)
+    ol = os.strip().split('\n')
+    cs = 0
+    for i in range(1,len(ol)-1):
+        for j in range(1,len(ol[0])-1):
+            if ((ol[i][j] ==  '#') and
+                (ol[i-1][j] ==  '#') and
+                (ol[i+1][j] ==  '#') and
+                (ol[i][j-1] ==  '#') and
+                (ol[i][j+1] ==  '#')):
+                cs += i*j
+    print(cs)
 
+def parttwo():
+    global CODE
+    CODE[0] = 2
+    pos = 0
+    relpos = 0
+    inMain = 'A,B,A,B,C,A,B,C,A,C\n'
+    inA = 'R,6,L,10,R,8\n'
+    inB = 'R,8,R,12,L,8,L,8\n'
+    inC = 'L,10,R,6,R,6,L,8\n'
+    inF = 'n\n'
+    In =[ord(x) for x in inMain + inA + inB + inC + inF]
+    (CODE, pos, relpos, Output, running) = intcom(CODE, pos, relpos, In, True)
+    os = ''.join(map(chr, Output[:-2]))
+    print(Output[-1])
+
+#partone()
+parttwo()
