@@ -5,19 +5,37 @@ chars = set(caveraw)
 small = chars & {chr(x) for x in range(ord('a'),ord('z')+1)}
 big = chars & {chr(x) for x in range(ord('A'),ord('Z')+1)}
 
-cave = caveraw.split('\n')
+cave = list(map(list,caveraw.split('\n')))
 
-q1 = [x[:41] for x in cave[:41]]
-q2 = [x[:41] for x in cave[:41]]
+# Close the quartermazes
+cave[39][40] = '#'
+cave[40][39:42] = ['#','@','#']
+cave[41][40] = '#'
+
+# for l in [''.join(c) for c in cave]:print(l)
+
+def graph(prevpos, pos, prevnode, steps, cave):
+    nodes = {}
+    moves = [(pos[0]-1,pos[1]),(pos[0],pos[1]+1),
+             (pos[0]+1,pos[1]),(pos[0],pos[1]-1)]
+    moves = filter(lambda x:x!=prevpos, moves)
+    moves = filter(lambda x:cave[x[0]][x[1]]!='#', moves)
+
+    if (cave[pos[0]][pos[1]] != '#' or len(moves) > 1):
+        if prevpos  != pos:
+            ##!! EERR  bara om den finns!
+            nodes[pos] = [cave[pos[0]][pos[1]], nodes[pos][1]+[prevnode,steps]]
+        else:
+            nodes[pos] = [cave[pos[0]][pos[1]], []]
 
 
-def graph(y,x,cave):
-    pass
+    
+    return nodes
 
-cavegraph = graph(39,39,q1)
-cavegraph += graph(39,41,q2)
-cavegraph += graph(41,41,q3)
-cavegraph += graph(41,39,q4)
+cavegraph = graph((39,39),(39,39),(39,39),0,cave)
+cavegraph.update(graph((39,41),(39,41),(39,41),0,cave))
+cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
+cavegraph.update(graph((41,39),(41,39),(41,39),0,cave))
     
 
 
