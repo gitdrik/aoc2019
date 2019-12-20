@@ -77,7 +77,9 @@ def unlockall(node, prevnode, keys, steps):
     nextnodes = []
     for n in cavegraph[node[0]][node[1]]]:
         # if not (closeddoor or (direction we came from but no found key) or (from special nodes))
-        if (((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or #closed door
-            ((cave[n[0]][n[1]] not in big) and foundkey
+        if not(((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or
+               (n == prevnode and not(foundkey) or
+               ((prevnode in specialnodes) and (n in specialnodes)):
+            # Walk along
 
     
