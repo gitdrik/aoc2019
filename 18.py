@@ -18,16 +18,18 @@ def graph(prevpos, pos, prevnode, steps, cave):
     nodes = {}
     moves = [(pos[0]-1,pos[1]),(pos[0],pos[1]+1),
              (pos[0]+1,pos[1]),(pos[0],pos[1]-1)]
-    moves = filter(lambda x:x!=prevpos, moves)
-    moves = filter(lambda x:cave[x[0]][x[1]]!='#', moves)
+    moves = list(filter(lambda x:x!=prevpos, moves))
+    moves = list(filter(lambda x:cave[x[0]][x[1]]!='#', moves))
 
-    if (cave[pos[0]][pos[1]] != '#' or len(moves) > 1):
-        if prevpos  != pos:
-            ##!! EERR  bara om den finns!
-            nodes[pos] = [cave[pos[0]][pos[1]], nodes[pos][1]+[prevnode,steps]]
-        else:
-            nodes[pos] = [cave[pos[0]][pos[1]], []]
+    if (cave[pos[0]][pos[1]] != '.' or len(moves) > 1):
+        nodes[pos] = {}
+        if prevnode != pos:
+            nodes[pos][prevnode] = steps
+        prevnode = pos
+        steps = 0
 
+    for m in moves:
+        nodes.update(graph(pos, m, prevnode,steps+1,cave))
 
     
     return nodes
