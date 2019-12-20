@@ -1,3 +1,5 @@
+include math
+
 with open('18.txt') as f:
    caveraw = f.read().strip()
 
@@ -62,7 +64,7 @@ cavegraph[(41,39)] = {(39,41):4, (39,39):2, (41,41):4}
 cavegraph[(41,41)] = {(39,39):4, (41,39):2, (39,41):4}
 
   
-def unlockall(node, prevnode, keys, steps):
+def fetchkeys(node, prevnode, keys, steps):
     global cavegraph
     global small
     global big
@@ -75,11 +77,15 @@ def unlockall(node, prevnode, keys, steps):
         foundkey = True
 
     nextnodes = []
-    for n in cavegraph[node[0]][node[1]]]:
+    for n in cavegraph[node]:
         # if not (closeddoor or (direction we came from but no found key) or (from special nodes))
         if not(((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or
                (n == prevnode and not(foundkey) or
                ((prevnode in specialnodes) and (n in specialnodes)):
-            # Walk along
+            nextnodes.append(n)
+
+    nextsteps = math.inf
+    for n in nextnodes:
+        nextsteps = min(nextsteps, fetchkeys(n, node, keys, steps+cavegraph[node][n]))
 
     
