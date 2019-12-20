@@ -40,7 +40,7 @@ cavegraph.update(graph((39,41),(39,41),(39,41),0,cave))
 cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
 cavegraph.update(graph((41,39),(41,39),(41,39),0,cave))
 
-# Make graph bidirectional
+# Make graph bi-directional
 for n in cavegraph:
     for m in cavegraph[n]:
         cavegraph[m].update({n:cavegraph[n][m]})
@@ -62,7 +62,7 @@ cavegraph[(39,39)] = {(39,41):2, (41,39):2, (41,41):4}
 cavegraph[(39,41)] = {(39,39):2, (41,39):4, (41,41):2}
 cavegraph[(41,39)] = {(39,41):4, (39,39):2, (41,41):4}
 cavegraph[(41,41)] = {(39,39):4, (41,39):2, (39,41):4}
-
+cnodes = {(39,39),(39,41),(41,39),(41,42)}
   
 def fetchkeys(node, prevnode, keys, steps):
     global cavegraph
@@ -81,11 +81,19 @@ def fetchkeys(node, prevnode, keys, steps):
         # if not (closeddoor or (direction we came from but no found key) or (from special nodes))
         if not(((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or
                (n == prevnode and not(foundkey) or
-               ((prevnode in specialnodes) and (n in specialnodes)):
+               ((prevnode in cnodes) and (n in cnodes)):
             nextnodes.append(n)
 
     nextsteps = math.inf
     for n in nextnodes:
         nextsteps = min(nextsteps, fetchkeys(n, node, keys, steps+cavegraph[node][n]))
+
+    return nextsteps
+
+print(min(fetchkeys((39,39),(39,39),set(),2),
+          fetchkeys((39,41),(39,41),set(),2),
+          fetchkeys((41,39),(41,39),set(),2),
+          fetchkeys((41,41),(41,41),set(),2))
+
 
     
