@@ -1,4 +1,4 @@
-include math
+import math
 
 with open('18.txt') as f:
    caveraw = f.read().strip()
@@ -81,7 +81,7 @@ def fetchkeys(node, prevnode, keys, steps):
         # if not (closeddoor or (direction we came from but no found key) or (from special nodes))
         if not(((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or
                (n == prevnode and not(foundkey) or
-               ((prevnode in cnodes) and (n in cnodes)):
+               ((prevnode in cnodes) and (n in cnodes))):
             nextnodes.append(n)
 
     nextsteps = math.inf
