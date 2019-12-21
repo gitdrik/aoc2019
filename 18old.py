@@ -100,13 +100,17 @@ def fetchkeys(node, prevnode, keys, steps, maxsteps):
 
     return maxsteps
 
-minsteps = math.inf
+minsteps = 5220
 for n in cnodes:
     minsteps = min(minsteps, fetchkeys(n,n,set(),2,minsteps))
 
 print(minsteps)
                    
-# 7896, 6250, 5646 was to high.4636 was wrong.
+# 7896, 6250, 5646 was to high.
+# 4636, 5216 was wrong.
+# not 302
+# 4868 was righ for someone else!!!
+
 
 
     
