@@ -45,8 +45,8 @@ cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
 # manually connect quartermazes
 cavegraph[(39,39)].update({(39,41):2, (41,39):2, (41,41):4})
 cavegraph[(39,41)].update({(39,39):2, (41,39):4, (41,41):2})
-cavegraph[(41,39)].update({(39,41):4, (39,39):2, (41,41):4})
-cavegraph[(41,41)].update({(39,39):4, (41,39):2, (39,41):4})
+cavegraph[(41,39)].update({(39,41):4, (39,39):2, (41,41):2})
+cavegraph[(41,41)].update({(39,39):4, (41,39):2, (39,41):2})
 cnodes = {(39,39),(39,41),(41,39),(41,41)}
 
 # Make graph bi-directional
