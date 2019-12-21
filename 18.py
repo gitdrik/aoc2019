@@ -1,4 +1,5 @@
 import math
+import copy
 
 with open('18.txt') as f:
    caveraw = f.read().strip()
@@ -12,7 +13,7 @@ cave = list(map(list,caveraw.split('\n')))
 cave[39][40] = '#'
 cave[40][39:42] = ['#','@','#']
 cave[41][40] = '#'
-for l in [''.join(c) for c in cave]:print(l)
+#for l in [''.join(c) for c in cave]:print(l)
 
 
 def graph(prevpos, pos, prevnode, steps, cave):
@@ -37,8 +38,16 @@ def graph(prevpos, pos, prevnode, steps, cave):
 # Make a graph of the cave
 cavegraph = graph((39,39),(39,39),(39,39),0,cave)
 cavegraph.update(graph((39,41),(39,41),(39,41),0,cave))
-cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
 cavegraph.update(graph((41,39),(41,39),(41,39),0,cave))
+cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
+
+
+# manually connect quartermazes
+cavegraph[(39,39)].update({(39,41):2, (41,39):2, (41,41):4})
+cavegraph[(39,41)].update({(39,39):2, (41,39):4, (41,41):2})
+cavegraph[(41,39)].update({(39,41):4, (39,39):2, (41,41):4})
+cavegraph[(41,41)].update({(39,39):4, (41,39):2, (39,41):4})
+cnodes = {(39,39),(39,41),(41,39),(41,41)}
 
 # Make graph bi-directional
 for n in cavegraph:
@@ -47,25 +56,26 @@ for n in cavegraph:
 
 # Remove dead ends
 while 1:
-    delitems = []
+    dels = []
     for n in cavegraph:
         if cave[n[0]][n[1]]=='.' and len(cavegraph[n]) == 1:
-            delitems.append(n)
-    if len(delitems):
-        for i in delitems:
-            del cavegraph[i]
+            dels.append(n)
+    if len(dels):
+        for n in dels:
+            del cavegraph[n]
+        for n in cavegraph:
+            for m in dels:
+                if m in cavegraph[n]:
+                    del cavegraph[n][m]        
     else:
         break
 
-# manually connect quartermazes
-cavegraph[(39,39)] = {(39,41):2, (41,39):2, (41,41):4}
-cavegraph[(39,41)] = {(39,39):2, (41,39):4, (41,41):2}
-cavegraph[(41,39)] = {(39,41):4, (39,39):2, (41,41):4}
-cavegraph[(41,41)] = {(39,39):4, (41,39):2, (39,41):4}
-cnodes = {(39,39),(39,41),(41,39),(41,42)}
   
-def fetchkeys(node, prevnode, keys, steps):
+def fetchkeys(node, prevnode, keys, steps, maxsteps):
+    if steps >= maxsteps:
+        return math.inf
     global cavegraph
+    global cnodes
     global small
     global big
     foundkey = False
@@ -73,6 +83,7 @@ def fetchkeys(node, prevnode, keys, steps):
     if (obj in small) and not(obj in keys):
         keys.update(cave[node[0]][node[1]])
         if len(keys)==len(small):
+            print(steps)
             return steps
         foundkey = True
 
@@ -80,20 +91,22 @@ def fetchkeys(node, prevnode, keys, steps):
     for n in cavegraph[node]:
         # if not (closeddoor or (direction we came from but no found key) or (from special nodes))
         if not(((cave[n[0]][n[1]] in big) and (cave[n[0]][n[1]].lower() not in keys)) or
-               (n == prevnode and not(foundkey) or
+               (n == prevnode and not(foundkey)) or
                ((prevnode in cnodes) and (n in cnodes))):
             nextnodes.append(n)
 
-    nextsteps = math.inf
     for n in nextnodes:
-        nextsteps = min(nextsteps, fetchkeys(n, node, keys, steps+cavegraph[node][n]))
+        maxsteps = min(maxsteps, fetchkeys(n, node, copy.deepcopy(keys), steps+cavegraph[node][n], maxsteps))
 
-    return nextsteps
+    return maxsteps
 
-print(min(fetchkeys((39,39),(39,39),set(),2),
-          fetchkeys((39,41),(39,41),set(),2),
-          fetchkeys((41,39),(41,39),set(),2),
-          fetchkeys((41,41),(41,41),set(),2))
+minsteps = math.inf
+for n in cnodes:
+    minsteps = min(minsteps, fetchkeys(n,n,set(),2,minsteps))
+
+print(minsteps)
+                   
+# 7896, 6250, 5646 was to high.4636 was wrong.
 
 
     
