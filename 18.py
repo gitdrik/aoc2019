@@ -109,8 +109,6 @@ def dijkstra(start, stop, lockeddoors):
 def fetchkeys(node, remainingkeynodes, steps, maxsteps):
     global cavegraph
     global keydoors
-    global small
-    global big
     
     if steps >= maxsteps:
         return math.inf
