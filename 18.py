@@ -110,9 +110,6 @@ def fetchkeys(node, remainingkeynodes, steps, maxsteps):
     global cavegraph
     global keydoors
     
-    if steps >= maxsteps:
-        return math.inf
-
     if remainingkeynodes == set():
         print(steps)
         return steps
@@ -123,18 +120,18 @@ def fetchkeys(node, remainingkeynodes, steps, maxsteps):
         knodesteps = dijkstra(node, knode, lockeddoors, remainingkeynodes-{knode})
         if steps+knodesteps < maxsteps:
             maxsteps = min(maxsteps,
-                       fetchkeys(knode, copy.deepcopy(remainingkeynodes-{knode}),
+                       fetchkeys(knode, remainingkeynodes-{knode},
                                  steps+knodesteps,maxsteps))
     return maxsteps
 
 
-print(fetchkeys((40,40), keynodes, 0, math.inf))
+print(fetchkeys((40,40), keynodes, 0, 5000))
                    
 # 7896, 6250, 5646 was to high.
 # 4636, 5216, 5258 was wrong.
 # not 302
 # 4868 was righ for someone else!!!
-# not 4632
+# not 4632, not 4630
 
 
 
