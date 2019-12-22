@@ -84,7 +84,7 @@ for n in cavegraph:
                 keydoors[k] = n
 
 
-def dijkstra(start, stop, lockeddoors):
+def dijkstra(start, stop, lockeddoors, blockingkeys):
     global cavegraph
     pos = start
     PL = {pos:0}
@@ -92,7 +92,7 @@ def dijkstra(start, stop, lockeddoors):
     SP = set()
     while pos != stop:
         for n in cavegraph[pos]:
-            if (n not in PL) and (n not in lockeddoors):
+            if (n not in PL) and (n not in lockeddoors) and (n not in blockingkeys):
                 if n in TL:
                     TL[n] = min(TL[n], PL[pos] + cavegraph[pos][n])
                 else:
@@ -120,7 +120,7 @@ def fetchkeys(node, remainingkeynodes, steps, maxsteps):
     lockeddoors = {keydoors[x] for x in remainingkeynodes}
     
     for knode in remainingkeynodes:
-        knodesteps = dijkstra(node, knode, lockeddoors)
+        knodesteps = dijkstra(node, knode, lockeddoors, remainingkeynodes-{knode})
         if steps+knodesteps < maxsteps:
             maxsteps = min(maxsteps,
                        fetchkeys(knode, copy.deepcopy(remainingkeynodes-{knode}),
@@ -131,9 +131,10 @@ def fetchkeys(node, remainingkeynodes, steps, maxsteps):
 print(fetchkeys((40,40), keynodes, 0, math.inf))
                    
 # 7896, 6250, 5646 was to high.
-# 4636, 5216 was wrong.
+# 4636, 5216, 5258 was wrong.
 # not 302
 # 4868 was righ for someone else!!!
+# not 4632
 
 
 
