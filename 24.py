@@ -26,7 +26,8 @@ while not(bd in bds):
         else:
             n.append(False)
     Eris = n
-    bd = int(''.join(str(int(i)) for i in reversed(Eris)), 2)
+    bd = sum([b << i for i, b in enumerate(Eris)]
+
 
 print(bd)
 
