@@ -1,5 +1,4 @@
 import math
-import copy
 
 with open('18.txt') as f:
    caveraw = f.read().strip()
@@ -14,7 +13,6 @@ cave[39][40] = '#'
 cave[40][39:42] = ['#','@','#']
 cave[41][40] = '#'
 #for l in [''.join(c) for c in cave]:print(l)
-
 
 def graph(prevpos, pos, prevnode, steps, cave):
     nodes = {}
@@ -41,7 +39,6 @@ cavegraph.update(graph((39,41),(39,41),(39,41),0,cave))
 cavegraph.update(graph((41,39),(41,39),(41,39),0,cave))
 cavegraph.update(graph((41,41),(41,41),(41,41),0,cave))
 
-
 # manually connect quartermazes and add centernode
 cavegraph[(39,39)].update({(39,41):2, (41,39):2, (40,40):2})
 cavegraph[(39,41)].update({(39,39):2, (41,41):2, (40,40):2})
@@ -55,84 +52,73 @@ for n in cavegraph:
     for m in cavegraph[n]:
         cavegraph[m].update({n:cavegraph[n][m]})
 
-# Remove dead ends
-while 1:
-    dels = []
-    for n in cavegraph:
-        if cave[n[0]][n[1]]=='.' and len(cavegraph[n]) == 1:
-            dels.append(n)
-    if len(dels):
-        for n in dels:
-            del cavegraph[n]
-        for n in cavegraph:
-            for m in dels:
-                if m in cavegraph[n]:
-                    del cavegraph[n][m]        
-    else:
-        break
 
 keynodes = set()
+doornodes = set()
 for n in cavegraph:
     if cave[n[0]][n[1]] in small:
         keynodes.update({n})
+    if cave[n[0]][n[1]] in big:
+        doornodes.update({n})
 
 keydoors = {}
+doorkeys = {}
 for n in cavegraph:
     if cave[n[0]][n[1]] in big:
         for k in keynodes:
             if cave[n[0]][n[1]].lower() == cave[k[0]][k[1]]:
                 keydoors[k] = n
+                doorkeys[n] = k
 
-
-def dijkstra(start, stop, lockeddoors, blockingkeys):
+def dijkstra(start, stop):
     global cavegraph
     pos = start
     PL = {pos:0}
     TL = {}
-    SP = set()
+    SP = {}
+    SP[start] = [start]
     while pos != stop:
         for n in cavegraph[pos]:
-            if (n not in PL) and (n not in lockeddoors) and (n not in blockingkeys):
+            if (n not in PL): #and (n not in lockeddoors) and (n not in blockingkeys):
                 if n in TL:
-                    TL[n] = min(TL[n], PL[pos] + cavegraph[pos][n])
+                    newTL = PL[pos] + cavegraph[pos][n]
+                    if newTL < TL[n]:
+                        TL[n] = newTL
+                        print(SP)
+                        SP[n] = SP[pos] + [n]
                 else:
                     TL[n] = PL[pos] + cavegraph[pos][n]
+                    SP[n] = SP[pos] + [n]
         if TL != {}:
             pos = min(TL)
             PL[pos]=TL[pos]
             del TL[pos]
         else:
             return math.inf
-    return PL[pos]
+    return (PL[pos], SP[pos])
 
+# Make graph with precalculated steps from all keys to all keys,
+# with keys and doors in between, and starting also from center (40,40).
+G = {}
+for n in keynodes | {(40,40)}:
+    G[n] = {}
+    for m in keynodes:
+        (steps, route) = dijkstra(n,m)
+        route = route[1:-1]
+        G[n][m] = [steps,
+                   {x for x in route if x in keynodes},
+                   {x for x in route if x in doornodes}]
 
-def fetchkeys(node, remainingkeynodes, steps, maxsteps):
-    global cavegraph
-    global keydoors
-    
-    if remainingkeynodes == set():
+def fetch(node, rkeyn, steps, maxsteps, G):
+    if len(rkeyn) == 0:
         print(steps)
-        return steps
-
-    lockeddoors = {keydoors[x] for x in remainingkeynodes}
-    
-    for knode in remainingkeynodes:
-        knodesteps = dijkstra(node, knode, lockeddoors, remainingkeynodes-{knode})
-        if steps+knodesteps < maxsteps:
+        return steps 
+    for knode in rkeyn:
+        if ((steps + G[node][knode][0] < maxsteps) and
+            (len(G[node][knode][1] & rkeyn) == 0) and
+            (len(G[node][knode][2] & {keydoors[x] for x in rkeyn})==0)):
             maxsteps = min(maxsteps,
-                       fetchkeys(knode, remainingkeynodes-{knode},
-                                 steps+knodesteps,maxsteps))
+                           fetch(knode, rkeyn-{knode}, steps+G[node][knode][0],maxsteps,G))
     return maxsteps
 
-
-print(fetchkeys((40,40), keynodes, 0, 5000))
-                   
-# 7896, 6250, 5646 was to high.
-# 4636, 5216, 5258 was wrong.
-# not 302
-# 4868 was righ for someone else!!!
-# not 4632, not 4630
-
-
-
-    
+print(fetch((40,40),keynodes,0,math.inf,G)) # right answer: 4620
