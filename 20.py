@@ -4,10 +4,7 @@ maze = []
 with open('20.txt') as f:
     for line in f:
         maze += [line.strip('\n')]
-
-#for l in [''.join(str(i) + c) for i, c in enumerate(maze)]:print(l)
-#for l in [''.join(c) for i, c in enumerate(maze)]:print(l)
-
+        
 labels = {}
 # top
 for i, c in enumerate(maze[0]):
@@ -96,7 +93,6 @@ def dijkstra(start, stop, g):
             return math.inf
     return (PL[pos], SP[pos])
 
-
 # Create a coherent graph of the whole maze
 G = {}
 for p in labels:
@@ -112,5 +108,4 @@ for l in set(labels.values()):
 
 start = [n for n in labels if labels[n]=='AA']
 stop = [n for n in labels if labels[n]=='ZZ']
-
 print(dijkstra(start[0],stop[0], G)[0])
