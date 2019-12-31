@@ -91,5 +91,4 @@ def intcom(C, pos, relpos, Input, running):
             relpos += a
             pos += 2
 
-
 intcom(CODE,0,0,[],True)
