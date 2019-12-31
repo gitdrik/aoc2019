@@ -89,4 +89,3 @@ for t in range(200):
     plutoEris = [[0]*25] + nextPE + [[0]*25]
      
 print(sum([sum(x) for x in plutoEris]))
-
