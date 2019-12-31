@@ -39,7 +39,6 @@ for i, c in enumerate([x[129] for x in maze]):
     if c in {chr(x) for x in range(ord('A'),ord('Z')+1)}:
         labels[(i,128)] = ''.join([maze[i][129],maze[i][130]])
 
-
 # Makes some sort of graph
 def graph(prevpos, pos, prevnode, steps, maze, labels):
     nodes = {}
@@ -57,7 +56,7 @@ def graph(prevpos, pos, prevnode, steps, maze, labels):
     moves = [x for x in moves if maze[x[0]][x[1]] == '.']
     for m in moves:
         nodes.update(graph(pos, m, prevnode,steps+1,maze,labels))
-  
+        
     return nodes
 
 # Make graph bi-directional
