@@ -84,7 +84,7 @@ def dijkstra(start, stop, g):
                     TL[n] = PL[pos] + g[pos][n]
                     SP[n] = SP[pos] + [n]
         if TL != {}:
-            pos = min(TL)
+            pos = min(TL, key=TL.get)
             PL[pos]=TL[pos]
             del TL[pos]
         else:
@@ -111,7 +111,6 @@ G1 = makeG(g1,(39,39))
 G2 = makeG(g2,(39,41))
 G3 = makeG(g3,(41,39))
 G4 = makeG(g4,(41,41))
-
 
 def quatrofetch(n1, n2, n3, n4, rkeyn, steps, maxsteps, G1, G2, G3, G4):
     if len(rkeyn) == 0:
