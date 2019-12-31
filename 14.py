@@ -25,5 +25,3 @@ def produce(chemical, num):
 
 produce('FUEL',1)
 print(chemicals['ORE'][1])
-        
-        
