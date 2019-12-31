@@ -40,7 +40,6 @@ for i, c in enumerate([x[129] for x in maze]):
     if c in {chr(x) for x in range(ord('A'),ord('Z')+1)}:
         outer[i,128] = ''.join([maze[i][129],maze[i][130]])
 
-
 # Makes some sort of graph
 def graph(prevpos, pos, prevnode, steps, maze, labels):
     nodes = {}
@@ -101,7 +100,6 @@ def dijkstra(start,stop,inodes,onodes,links,g):
         else:
             return math.inf
     return (PL[pos]) #, SP[pos])
-
 
 # Create a coherent graph of the whole maze
 G = {}
