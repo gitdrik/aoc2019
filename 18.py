@@ -52,7 +52,6 @@ for n in cavegraph:
     for m in cavegraph[n]:
         cavegraph[m].update({n:cavegraph[n][m]})
 
-
 keynodes = set()
 doornodes = set()
 for n in cavegraph:
@@ -90,7 +89,7 @@ def dijkstra(start, stop):
                     TL[n] = PL[pos] + cavegraph[pos][n]
                     SP[n] = SP[pos] + [n]
         if TL != {}:
-            pos = min(TL)
+            pos = min(TL, key=TL.get)
             PL[pos]=TL[pos]
             del TL[pos]
         else:
