@@ -5,8 +5,7 @@ with open('22.txt') as f:
         if  line[1] == 'stack':
             code.append(['deal into new stack',[]])
         else:
-            code.append([line[0],int(line[1])])
-        
+            code.append([line[0],int(line[1])])       
 
 def shuffle(code, deck):
     for c in code:
@@ -22,7 +21,4 @@ def shuffle(code, deck):
             
     return deck
 
-
 print(shuffle(code,[x for x in range(10007)]).index(2019))
-            
-            
