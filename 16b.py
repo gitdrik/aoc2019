@@ -16,5 +16,3 @@ for p in range(100):
 result = long[-8:]
 result.reverse()
 print(''.join(map(str, result)))
-    
-    
